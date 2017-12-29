@@ -6,7 +6,7 @@ from todo import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$',views.tasklist.as_view(),name='task'),
-    url(r'^delete/(?P<taskid>[0-9]+)',views.deleteTask,name='deletetask'),
+    url(r'^(?P<taskid>[0-9]+)',views.tasklist.as_view(),name='deletetask'),
     url(r'^done/(?P<taskid>[0-9]+)',views.doneTask,name='donetask'),
     url(r'^undone/(?P<taskid>[0-9]+)',views.undoneTask,name='undonetask'),
 ]

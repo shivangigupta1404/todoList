@@ -29,9 +29,10 @@ class tasklist(APIView):
 			return HttpResponseRedirect('/')
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def deleteTask(request,taskid):
-	task.objects.filter(taskid=taskid).delete()
-	return HttpResponseRedirect('/')
+	def delete(self,request,taskid,format=None):
+		task.objects.filter(taskid=taskid).delete()
+		return HttpResponse('/')	
+
 
 def doneTask(request,taskid):
 	task.objects.filter(taskid=taskid).update(isDone=True)
