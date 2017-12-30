@@ -7,33 +7,32 @@
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>	
     <style type="text/css">
-      body
-      {  
-        font-family: Abel,"Lucida Sans Unicode","Lucida Grande",Tahoma,Garuda,Verdana,sans-serif;
-      }
-      .white {
-      	color: #FFFFFF;
-      }
-      .background-color{
-      	background-color: #122345;
-      }
+      .white {color: #FFFFFF;}
+      .background-color{background-color: #122345;}
+      .margin-right-10{margin-right:10%;}
+      .margin-left-10{margin-left: 10%;}
       .notepad{
       	background-color:#FFFFFF;
       	height:100%
+      }
+      body{  
+        font-family: Abel,"Lucida Sans Unicode","Lucida Grande",Tahoma,Garuda,Verdana,sans-serif;
       }
       .box{
       	margin: 30px;
       	background-color:#67D2C2 ;
       }   
       h3{margin-left: 10%;}
-      input[type="text"]{
-      	margin-left: 10%;
+      #addTask{
+        margin-top: 20px;
       	width:80%;
       	border: 2px solid #122345;
       	padding: 10px;
       }
       ul{
       	list-style: none;
+        margin: 0;
+        padding: 0;
       }
       .checkboxform{display: inline-block;}
       #doneList{text-decoration:line-through;}
@@ -48,19 +47,19 @@
   					<div class="notepad">		
   						<form action="{% url 'task' %}" method="POST">
   						{% csrf_token %}
-  							<input type="text" name="taskName"/ placeholder="Type and hit enter to add">
+  							<input class="margin-left-10" type="text" name="taskName" id="addTask" placeholder="Type and hit enter to add">
   							<input type="submit" name="submit">
   						</form>
   						<h3>To Do</h3>
   						<ul id="undoneList">
 						    {% for task in toDoTasks %}
 						    <li>
-                  <div class="task">
+                  <div class="task margin-left-10 margin-right-10">
   						    	<form action="done/{{task.taskid}}" class="checkboxform">
   						    		<input style="display:inline-block;" type="checkbox" onchange="$(this).closest('form').submit();">
   						    	</form>
-  						    	<span value="{{task.taskid}}" class="item">{{task.taskName}}<span>
-  						    	<span class="itemdelete" value="{{task.taskid}}"><img src="../static/delete.png"></span>
+  						    	<span value="{{task.taskid}}" class="item">{{task.taskName}}</span>
+  						    	<span class="itemdelete pull-right" value="{{task.taskid}}"><img src="../static/cross.gif"></span>
                   </div>
 						    </li>
 						    {% endfor %}
@@ -69,12 +68,12 @@
   						<ul id="doneList">
 						    {% for task in doneTasks %}
                 <li>
-                  <div class="task">
+                  <div class="task margin-left-10 margin-right-10">
                     <form action="undone/{{task.taskid}}" class="checkboxform">
                       <input style="display:inline-block;" type="checkbox" onchange="$(this).closest('form').submit();">
                     </form>
-                    <span value="{{task.taskid}}" class="item">{{task.taskName}}<span>
-                    <span class="itemdelete" value="{{task.taskid}}"><img src="../static/delete.png"></span>
+                    <span value="{{task.taskid}}" class="item">{{task.taskName}}</span>
+                    <span class="itemdelete pull-right" value="{{task.taskid}}"><img src="../static/cross.gif"></span>
                   </div>
                 </li>
 						    {% endfor %}
@@ -89,12 +88,26 @@
 
 {% csrf_token %}
   <script type="text/javascript">
+
+    function updateNewValue(element,taskid){
+      taskName=$('#newval').val();
+      jQuery.ajax({
+        url:"/",
+        data:{taskName:taskName,taskid:taskid},
+        type: 'PUT',
+        success:function(data){
+            $(element).closest('span').html(taskName);
+        }
+      });
+    };
+
     $(function() {
         var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
         function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
+
         $.ajaxSetup({
             beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -115,27 +128,27 @@
         });
 
         $('body').on('dblclick','.item',function(e){
-          id=$(this).attr("value");
-          console.log(id);
+          taskid=$(this).attr("value");
+          taskName=$(this).html();
+          input_box="<input type='text' id='newval' value='"+taskName+"'>";
+          button="<button onclick='updateNewValue(this,taskid);'>Save</button>";
+          $(this).html(input_box+button);
         });
 
         $('body').on('click','.itemdelete',function(e){
-          var that=this;
+          var element=this;
           taskid=$(this).attr("value");
-          console.log(taskid);
           jQuery.ajax({
-              url:"/"+taskid,
+              url:"/",
               type: 'DELETE',
+              data:{taskid:taskid},
               success:function(data){
-                  console.log("deleted");
-                  $(that).closest('.task').hide(); 
+                  $(element).closest('.task').hide(); 
               }
           });
         });
 
     });
-
-
 
   </script>
   </body>

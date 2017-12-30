@@ -17,6 +17,7 @@ import json
 class tasklist(APIView):
 	renderer_classes = [TemplateHTMLRenderer]
 	template_name = 'homepage.html'
+
 	def get(self, request):
 		toDoTasks=task.objects.filter(isDone=False).order_by('-taskid')
 		doneTasks=task.objects.filter(isDone=True).order_by('-taskid')
@@ -29,9 +30,18 @@ class tasklist(APIView):
 			return HttpResponseRedirect('/')
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-	def delete(self,request,taskid,format=None):
+	def delete(self,request):
+		data=json.loads(json.dumps(request.data))
+		taskid=data.get("taskid")
 		task.objects.filter(taskid=taskid).delete()
-		return HttpResponse('/')	
+		return HttpResponse('/')
+
+	def put(self,request):
+		data=json.loads(json.dumps(request.data))
+		taskName=data.get("taskName")
+		taskid=data.get("taskid")
+		task.objects.filter(taskid=taskid).update(taskName=taskName)
+		return HttpResponse('/')
 
 
 def doneTask(request,taskid):
