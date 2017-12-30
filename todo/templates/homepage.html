@@ -19,6 +19,9 @@
   							<input type="submit" name="submit">
   						</form>
   						<h3>To Do</h3>
+              {% if toDoTasks.count == 0 %}
+                <span class="margin-left-10">No items. Why not add one above.</span>
+              {% endif %}
   						<ul id="undoneList">
 						    {% for task in toDoTasks %}
 						    <li>

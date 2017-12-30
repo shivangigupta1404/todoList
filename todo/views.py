@@ -12,8 +12,6 @@ from .models import task
 from .serializers import taskSerializer
 import json
 
-#list all tasks or create a new
-# tasks/
 class tasklist(APIView):
 	renderer_classes = [TemplateHTMLRenderer]
 	template_name = 'homepage.html'
