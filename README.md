@@ -3,9 +3,15 @@ This is a simple django based To-Do List. It uses Rest API for servicing various
 
 Having following features:
 * Add a task.
-* Delete the task
-* Edit the task [On double clicking task]
-* check/Uncheck the task
+* Delete the task.
+* Edit the task. [On double clicking task]
+* check/Uncheck the task.
+
+## Screenshot:
+<p>
+  <kbd><img src="screenshot.PNG"/></kbd>
+</p>
+
 
 ## Steps to run the application:
 1) You need to have python 2.7 installed. </br>
