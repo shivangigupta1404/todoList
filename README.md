@@ -18,7 +18,6 @@ Having following features:
    pip install django, djangorestframework
    ```
  
-
 3) Extract the zip file Or clone the respository using following command
    ```sh
    git clone https://github.com/shivangigupta1404/todoList.git

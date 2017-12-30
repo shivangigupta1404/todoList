@@ -8,7 +8,7 @@
       }
       body{  font-family: monospace;}
       .box{
-      	margin: 30px;
+      	margin:  0px 30px 0px 30px;
       	background-color:#67D2C2 ;
       }   
       h3{margin-left: 10%;color:#67D2C2;}
@@ -25,3 +25,6 @@
       }
       .checkboxform{display: inline-block;}
       #doneList{text-decoration:line-through;}
+      @media(max-width:767px){
+        .box{margin:0px 10px 0px 10px;}
+      } 
