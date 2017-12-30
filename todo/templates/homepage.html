@@ -4,39 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>	
-    <style type="text/css">
-      .white {color: #FFFFFF;}
-      .background-color{background-color: #122345;}
-      .margin-right-10{margin-right:10%;}
-      .margin-left-10{margin-left: 10%;}
-      .notepad{
-      	background-color:#FFFFFF;
-      	height:100%
-      }
-      body{  
-        font-family: Abel,"Lucida Sans Unicode","Lucida Grande",Tahoma,Garuda,Verdana,sans-serif;
-      }
-      .box{
-      	margin: 30px;
-      	background-color:#67D2C2 ;
-      }   
-      h3{margin-left: 10%;}
-      #addTask{
-        margin-top: 20px;
-      	width:80%;
-      	border: 2px solid #122345;
-      	padding: 10px;
-      }
-      ul{
-      	list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-      .checkboxform{display: inline-block;}
-      #doneList{text-decoration:line-through;}
-    </style>
+    <link rel="stylesheet" href="../static/custom.css">
   </head>
   <body class="background-color">
   		<div class="container-fluid box">
@@ -59,7 +27,7 @@
   						    		<input style="display:inline-block;" type="checkbox" onchange="$(this).closest('form').submit();">
   						    	</form>
   						    	<span value="{{task.taskid}}" class="item">{{task.taskName}}</span>
-  						    	<span class="itemdelete pull-right" value="{{task.taskid}}"><img src="../static/cross.gif"></span>
+  						    	<span value="{{task.taskid}}" class="itemdelete pull-right"><img src="../static/cross.gif"></span>
                   </div>
 						    </li>
 						    {% endfor %}
@@ -83,73 +51,8 @@
   				<div class="col-xs-hidden col-sm-3"></div>
   			</div>
   		</div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-{% csrf_token %}
-  <script type="text/javascript">
-
-    function updateNewValue(element,taskid){
-      taskName=$('#newval').val();
-      jQuery.ajax({
-        url:"/",
-        data:{taskName:taskName,taskid:taskid},
-        type: 'PUT',
-        success:function(data){
-            $(element).closest('span').html(taskName);
-        }
-      });
-    };
-
-    $(function() {
-        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
-
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-          }
-        });
-
-        $('form').each(function() {
-            $(this).find('input').keypress(function(e) {
-                // Enter pressed?
-                if(e.which == 10 || e.which == 13) {
-                    $(this).form.submit();
-                }
-            });
-
-           $(this).find('input[type=submit]').hide();
-        });
-
-        $('body').on('dblclick','.item',function(e){
-          taskid=$(this).attr("value");
-          taskName=$(this).html();
-          input_box="<input type='text' id='newval' value='"+taskName+"'>";
-          button="<button onclick='updateNewValue(this,taskid);'>Save</button>";
-          $(this).html(input_box+button);
-        });
-
-        $('body').on('click','.itemdelete',function(e){
-          var element=this;
-          taskid=$(this).attr("value");
-          jQuery.ajax({
-              url:"/",
-              type: 'DELETE',
-              data:{taskid:taskid},
-              success:function(data){
-                  $(element).closest('.task').hide(); 
-              }
-          });
-        });
-
-    });
-
-  </script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="../static/custom.js"></script>
   </body>
 </html>
